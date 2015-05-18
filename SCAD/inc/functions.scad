@@ -142,13 +142,17 @@ function idler_assy_r_inner(idler_bearing) = (idler_bearing[0] / 2) + (6 * singl
 //outer radius of the idler assembly (to smooth side of belt) 
 function idler_assy_r_outer(idler_bearing) = idler_assy_r_inner(idler_bearing) + belt_thickness + 1;
 
-module ext2020(l=20) {
+module ext2020(l=20, teeth = [1, 1, 1, 1]) {
   translate([0,0,l/2])
   difference(){
     cube([20,20,l], center=true);
+    if (teeth[0] == 1)
     translate([10-1.5,0,0])cube([3,6,l], center=true);
+    if (teeth[1] == 1)
     translate([-10+1.5,0,0])cube([3,6,l], center=true);
+    if (teeth[2] == 1)
     translate([0,10-1.5,0])cube([6,3,l], center=true);
+    if (teeth[3] == 1)
     translate([0,-10+1.5,0])cube([6,3,l], center=true);
   }
 }
