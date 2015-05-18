@@ -41,7 +41,7 @@ difference() {
     translate([-10,10,10])rotate([90,0,90])
     cylinder(r=m5_diameter/2 + 0.1, h=40, $fs=0.1);
   translate([23.5,38,0.45]) 
-    translate([0,10,10])rotate([90,0,90])
+    translate([-10,10,10])rotate([90,0,90])
     cylinder(r=m5_diameter/2 + 0.1, h=40, $fs=0.1);
 
   // prusa-style idler
