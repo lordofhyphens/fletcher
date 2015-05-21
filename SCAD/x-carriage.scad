@@ -2,13 +2,16 @@ include<inc/metric.scad>
 include<MCAD/nuts_and_bolts.scad> // MCAD library
 use<Belt_Generator.scad> // https://www.youmagine.com/designs/parametric-timing-belt-generator
 
+distance_to_belt_center = 13;
 translate([plate[0]/2-extruder_x/2,plate[1]/2,7])
   difference()
   {
-    translate([0,-4,0])cube([extruder_x, 10,7]);
-    mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
-    translate([0,0,3])mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
-    translate([extruder_x/2 - 3,-4,0])cube([6, 4,7]);
+    translate([0,-4,0])cube([extruder_x, 10,distance_to_belt_center+7]);
+    translate([0,3,distance_to_belt_center]) { scale([1,1,1.4])
+      mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
+      translate([extruder_x/2 - 3,-4,0])cube([6, 4,distance_to_belt_center]);
+      translate([0,-7,0])cube([extruder_x, 3,distance_to_belt_center]);
+    }
   }
 
 standoff = true;
