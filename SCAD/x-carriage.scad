@@ -31,7 +31,7 @@ prusa_x_sep = 30;
 prusa_y_sep = 0;
 
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
-plate_y = (rail_size + rail_separation + wheel_offset * 2 + 15 > extruder_z ? rail_size+ rail_separation + wheel_offset * 2 + 15 : extruder_z);
+plate_y = (rail_size + rail_separation + wheel_offset * 2 > extruder_z ? rail_size+ rail_separation + wheel_offset * 2 : extruder_z);
 plate = [extruder_x + 20, plate_y, 7];
 
 if (standoff) 
@@ -52,33 +52,31 @@ if (standoff)
 
   }
 difference() {
-  union() {
     cube(plate);
-
-  }
-  { // holes for v wheel mounting
-    translate([plate[0]/2, plate[1] -(2*wheel_offset+rail_separation+rail_size),,0])
-    { 
-      cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
-      nutHole(size=5);
-    }
-    translate([0,plate[1] - wheel_offset, 0]) 
-    {
-      translate([plate[0]/2 - (2+ wheel_od/2), 0,0])
-      {
+    translate([0,10,0])
+    { // holes for v wheel mounting
+      translate([plate[0]/2, plate[1] -(2*wheel_offset+rail_separation+rail_size),0])
+      { 
         cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
         nutHole(size=5);
       }
-      translate([plate[0]/2 + 2+wheel_od/2,0,0])
+      translate([0,plate[1] - wheel_offset, 0]) 
       {
-        cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
-        nutHole(size=5);
+        translate([plate[0]/2 - (2+ wheel_od/2), 0,0])
+        {
+          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          nutHole(size=5);
+        }
+        translate([plate[0]/2 + 2+wheel_od/2,0,0])
+        {
+          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          nutHole(size=5);
+        }
       }
     }
-  }
   if (mount_type == "rework")
   {
-    translate([0,21.5-5,0])
+    translate([0,-19,0])
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
           translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
@@ -86,7 +84,7 @@ difference() {
   }
   else if (mount_type == "prusa")
   {
-    translate([0,-21.5,0])
+    translate([0,-17.5,0])
     for (j = [1,-1]) // extruder prusaing holes
       for (i = [1,-1])
         translate([plate[0]/2 + i*prusa_x_sep/2, plate[1]/2 + j*prusa_y_sep/2,0])
@@ -105,7 +103,7 @@ difference() {
   }
   else if (mount_type == "wades")
   { 
-    translate([0,-21.5,0])
+    translate([0,-17.5,0])
     for (j = [1,-1]) // extruder wadesing holes
       for (i = [1,-1])
         translate([plate[0]/2 + i*wades_x_sep/2, plate[1]/2 + j*wades_y_sep/2,0])
