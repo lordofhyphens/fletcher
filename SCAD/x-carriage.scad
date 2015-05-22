@@ -1,6 +1,6 @@
 // Needs the SCAD from https://www.youmagine.com/designs/parametric-timing-belt-generator
 // to compile properly.
-mount_type="prusa"; // wades, prusa, or rework
+mount_type="prusa"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 
 distance_to_belt_center = 13;
 translate([plate[0]/2-extruder_x/2,plate[1]/2,7])
