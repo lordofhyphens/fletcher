@@ -55,7 +55,7 @@ difference() {
     cube(plate);
     translate([0,10,0])
     { // holes for v wheel mounting
-      translate([plate[0]/2, plate[1] -(2*wheel_offset+rail_separation+rail_size),0])
+      translate([plate[0]/2, plate[1] -(2*wheel_offset+rail_separation+rail_size-1),0])
       { 
         cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
         nutHole(size=5);
