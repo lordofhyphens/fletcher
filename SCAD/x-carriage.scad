@@ -6,11 +6,11 @@ distance_to_belt_center = 13;
 translate([plate[0]/2-extruder_x/2,plate[1]/2,7])
   difference()
   {
-    translate([0,-4,0])cube([extruder_x, 10,distance_to_belt_center+7]);
+    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+7]);
     translate([0,3,distance_to_belt_center]) { scale([1,1,1.4])
       mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
-      translate([extruder_x/2 - 3,-4,0])cube([6, 4,distance_to_belt_center]);
-      translate([0,-7,0])cube([extruder_x, 3,distance_to_belt_center]);
+      translate([extruder_x/2 - 3,-5,0])cube([6, 5,distance_to_belt_center]);
+      translate([0,-7.5,0])cube([extruder_x, 3,distance_to_belt_center]);
     }
   }
 
@@ -55,10 +55,18 @@ difference() {
     cube(plate);
     translate([0,10,0])
     { // holes for v wheel mounting
-      translate([plate[0]/2, plate[1] -(2*wheel_offset+rail_separation+rail_size-1),0])
-      { 
-        cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
-        nutHole(size=5);
+      translate([0,plate[1] -(2*wheel_offset+rail_separation+rail_size-0.55), 0]) 
+      {
+        translate([plate[0]/2 - (2+ wheel_od/2), 0,0])
+        {
+          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          nutHole(size=5);
+        }
+        translate([plate[0]/2 + 2+wheel_od/2,0,0])
+        {
+          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          nutHole(size=5);
+        }
       }
       translate([0,plate[1] - wheel_offset, 0]) 
       {
