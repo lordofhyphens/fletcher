@@ -38,21 +38,35 @@ if (standoff)
   translate([plate[0]*2,0,0])
   difference() {
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      cube([extruder_x,extruder_z,7]);
+      hull() 
+      {
+        $fn = 60;
+        translate([5, 5, 0]) cylinder(r=5, h=7);
+        translate([extruder_x-5, extruder_z-5, 0]) cylinder(r=5, h=7);
+        translate([extruder_x-5, 5, 0]) cylinder(r=5, h=7);
+        translate([5, extruder_z-5, 0]) cylinder(r=5, h=7);
+        *cube([extruder_x,extruder_z,7]);
+      }
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      translate([-10,-10,5])
+      translate([-10,-13,5])
         for (j = [1,-1]) // extruder reworking holes
           for (i = [1,-1])
             translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
             {
               translate([0,-21.5,0]) {
-                translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
+                translate([0,0,5])mirror([0,0,1])scale([1.10,1.10,1])boltHole(size=4,length=15, $fs=0.1);
               } 
             }
 
   }
 difference() {
-    cube(plate);
+    hull() {
+      $fn = 60;
+      translate([5,5,0])cylinder(r=5, h=plate[2]);
+      translate([plate[0]-5, 5, 0])cylinder(r=5, h=plate[2]);
+      translate([5, plate[1]-5, 0])cylinder(r=5, h=plate[2]);
+      translate([plate[0]-5,plate[1]-5,0])cylinder(r=5, h=plate[2]);
+    }
     translate([0,10,0])
     { // holes for v wheel mounting
       translate([0,plate[1] -(2*wheel_offset+rail_separation+rail_size-0.55), 0]) 
@@ -88,7 +102,7 @@ difference() {
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
           translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
-              translate([0,0,3.8])mirror([0,0,1])boltHole(size=4,length=7);
+              translate([0,0,3.8])mirror([0,0,1])scale([1.10,1.10,1])boltHole(size=4,length=7);
   }
   else if (mount_type == "prusa")
   {
@@ -119,12 +133,12 @@ difference() {
           if (standoff)
           {
             translate([0,-21.5,0]) {
-              translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
+              translate([0,0,5])mirror([0,0,1])scale([1.05,1.05,1])boltHole(size=4,length=15, $fs=0.1);
             }
           } 
           else  
           {
-            translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=7);
+            translate([0,0,5])mirror([0,0,1])scale([1.05,1.05,1])boltHole(size=4,length=7);
           }
         }
   }

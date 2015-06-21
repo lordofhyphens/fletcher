@@ -6,16 +6,17 @@ use <inc/functions.scad>
 
 // 48mm separation, center to center
 rail_separation = 48;
+bracket_width = 28;
 
 difference() {
   union() {
     // positive, brackets 
     translate([23.5,38,0.45]) 
       translate([10,20,10])rotate([90,0,0])
-          scale([1.2,1.05,1.2])ext2020(l=20, teeth=[0,0,0,0]);
+          scale([bracket_width/20,1.05,1.2])ext2020(l=20, teeth=[0,0,0,0]);
     translate([23.5,38,rail_separation-2])  
       translate([10,20,10])rotate([90,0,0])
-          scale([1.2,1.05,1.2])ext2020(l=20, teeth=[0,0,0,0]);
+          scale([bracket_width/20,1.05,1.2])ext2020(l=20, teeth=[0,0,0,0]);
 
 
     // positive, the original idler block
@@ -54,10 +55,10 @@ difference() {
 
 
 // support pillars, cut these off
-translate([11.5,14,10]) translate([10,20,10])cube([2,2,35]);
-translate([22+11.5,14,10]) translate([10,20,10])cube([2,2,35]);
-translate([11.5,36,10]) translate([10,20,10])cube([2,2,35]);
-translate([22+11.5,36,10]) translate([10,20,10])cube([2,2,35]);
+translate([9.5,14,10]) translate([10,20,10])cube([2,2,35]);
+translate([22+2+11.5,14,10]) translate([10,20,10])cube([2,2,35]);
+translate([9.5,36,10]) translate([10,20,10])cube([2,2,35]);
+translate([22+2+11.5,36,10]) translate([10,20,10])cube([2,2,35]);
 
 // spacer cube
 translate([11.5,14,10]) translate([10,20,30])cube([24,24,8.0]);
