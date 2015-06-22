@@ -54,7 +54,7 @@ module upper_bracket(angle1, angle2, fudge, support = true)
       translate([-(20+fudge), 0, 0]) rotate([0,-angle2[0],0]) cube([25,25,45], center=true);
 
     }
-    ext2020(l=20);
+    translate([0,0,-9]) ext2020(l=40, teeth=[0,0,1,1]);
     translate([20+fudge, 0, 0]) rotate([0,angle1[0],0]) 
     {
       ext2020(l=40, teeth=[1,0,1,1] );
