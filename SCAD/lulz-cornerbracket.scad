@@ -16,7 +16,7 @@ cork_plane = [cork[0],cork[1],cork[2]+screws_offset];
     *color("yellow")translate([0,0,heater[2]+glass[2]/2+ spreader[2] + cork_plane[2]])cube(glass,center=true);
 
 shift = 5;
-bracket = [162*2,162*2,12+shift];
+bracket = [163*2,163*2,12+shift];
 cutout=1.13 ;
 // corner mounting holes
 difference() {
