@@ -146,13 +146,13 @@ module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1) {
   scale([1.025,1.025,1])translate([0,0,l/2])
   difference(){
     cube([20,20,l], center=true);
-    scale([1,1/1.025,1]) {
+    scale([1.15,1/1.025,1]) {
         if (teeth[0] == 1)
         translate([10-(depth+0.5),0,0])cube([2+depth,6,l], center=true);
         if (teeth[1] == 1)
         translate([-10+(depth+0.5),0,0])cube([2+depth,6,l], center=true);
     }
-    scale([1/1.025,1,1]) {
+    scale([1/1.025,1.15,1]) {
         if (teeth[2] == 1)
         translate([0,10-(depth+0.5),0])cube([6,2+depth,l], center=true);
         if (teeth[3] == 1)
