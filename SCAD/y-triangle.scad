@@ -106,25 +106,42 @@ module upper_bracket(angle1, angle2, fudge, support = true)
   }
 }
 
-module lower_bracket(angles, support=true) 
+module lower_bracket(angles, support=true, stacked=true) 
 {
   difference() {
     union() {
       rotate([0,90,0]) 
         translate([0,-25.5,-2.5])cube([25,28.5,55], center=true);
-      rotate([0,angles[2],0]) 
-        difference()
-        { 
-          translate([0,-2.5,5])cube([30,25,40], center=true);
-          translate([-15,-5,14])rotate([0,90,0])cylinder(r=5/2 + 0.2, h=30);
-        }
+      if (stacked) {
+        translate([0,-22,30])
+        rotate([0,angles[2],0]) 
+          difference()
+          { 
+            translate([0,-3.5,5])cube([30,28.5,40], center=true);
+            translate([-15,-2.0,14])rotate([0,90,0])cylinder(r=5/2 + 0.2, h=30);
+          }
+        translate([-5,-25.5,5])cube([30,28.5,40], center=true);
+      } else {
+        rotate([0,angles[2],0]) 
+          difference()
+          { 
+            translate([0,-2.5,5])cube([30,25,40], center=true);
+            translate([-15,-5,14])rotate([0,90,0])cylinder(r=5/2 + 0.2, h=30);
+          }
+      }
     }
+    if (stacked) {
+      translate([0,-22,30])
+      rotate([0,angles[2],0]) 
+          translate([0,-2,0])ext2020(l=50, teeth=[1,1,1,1]);
+    } else {
     rotate([0,angles[2],0]) 
           translate([0,-5,0])ext2020(l=50, teeth=[1,1,1,0]);
+    }
     translate([0,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,1]);
     translate([-14,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0]);
     translate([16,-13,0])rotate([90,0,0])ext2020(l=50, teeth=[0,0,0,0]);
-    translate([0,-25,-14])cylinder(r=5/2 + 0.2, h=30);
+    translate([0,-25,-14])cylinder(r=5/2 + 0.2, h=20);
     translate([-100,-100,-32.5])cube([200,200,20]);
   }
   if (support) {
