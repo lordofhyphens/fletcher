@@ -3,10 +3,10 @@
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 
 distance_to_belt_center = 13;
-translate([plate[0]/2-extruder_x/2,plate[1]/2,7])
+translate([plate[0]/2-extruder_x/2,plate[1]/2,0])
   difference()
   {
-    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+7]);
+    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6]);
     translate([0,3,distance_to_belt_center]) { scale([1,1,1.4])
       mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
       translate([extruder_x/2 - 3,-5,0])cube([6, 5,distance_to_belt_center]);
