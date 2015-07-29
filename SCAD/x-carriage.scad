@@ -3,6 +3,7 @@
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 belt_type = "loop";
 distance_to_belt_center = 13;
+print="mount"; // mount, standoff, or both
 if (belt_type=="toothed") 
 {
 translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
@@ -21,8 +22,8 @@ if (belt_type=="loop")
 translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
 {
     translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6-3]);
-    translate([12,-0.44,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
-    translate([23,-0.44,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
+    translate([12,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
+    translate([23,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
     translate([0,5,distance_to_belt_center+6-3])cube([extruder_x, 4, 6]);
     for (i = [ 0, extruder_x-6])
     {
@@ -49,7 +50,7 @@ prusa_y_sep = 0;
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = (rail_size + rail_separation + wheel_offset * 2 > extruder_z ? rail_size+ rail_separation + wheel_offset * 2 : extruder_z);
 plate = [extruder_x + 20, plate_y, 7];
-
+if (print == "both" || print == "standoff")
 if (standoff) 
   translate([plate[0]*2,0,0])
   difference() {
