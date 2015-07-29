@@ -1,18 +1,34 @@
 // Needs the SCAD from https://www.youmagine.com/designs/parametric-timing-belt-generator
 // to compile properly.
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
-
+belt_type = "loop";
 distance_to_belt_center = 13;
-translate([plate[0]/2-extruder_x/2,plate[1]/2,0])
+if (belt_type=="toothed") 
+{
+translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
   difference()
   {
-    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6]);
+    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6-3]);
     translate([0,3,distance_to_belt_center]) { scale([1,1,1.4])
       mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
       translate([extruder_x/2 - 3,-5,0])cube([6, 5,distance_to_belt_center]);
       translate([0,-7.5,0])cube([extruder_x, 3,distance_to_belt_center]);
     }
   }
+}
+
+if (belt_type=="loop") 
+translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
+{
+    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6-3]);
+    translate([12,-0.44,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
+    translate([23,-0.44,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
+    translate([0,5,distance_to_belt_center+6-3])cube([extruder_x, 4, 6]);
+    for (i = [ 0, extruder_x-6])
+    {
+      translate([i,-0.88,distance_to_belt_center+6-3])cube([6, 3.2, 6]);
+    }
+}
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
 rail_separation = 48;
@@ -67,6 +83,12 @@ difference() {
       translate([5, plate[1]-5, 0])cylinder(r=5, h=plate[2]);
       translate([plate[0]-5,plate[1]-5,0])cylinder(r=5, h=plate[2]);
     }
+    // general spots for cable management
+    for (j = [4, 30])
+      for (i = [1, -1])
+      {
+        translate([plate[0]/2+ i*6,plate[1] - j,0]) cylinder(r=2,h=20, $fn=60);
+      }
     translate([0,10,0])
     { // holes for v wheel mounting
       translate([0,plate[1] -(2*wheel_offset+rail_separation+rail_size-0.55), 0]) 
