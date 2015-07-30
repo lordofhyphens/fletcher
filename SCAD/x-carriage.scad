@@ -19,12 +19,34 @@ translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
 }
 
 if (belt_type=="loop") 
-translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
+translate([plate[0]/2-extruder_x/2,plate[1]/2 + 4.5,0])
 {
-    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6-3]);
+    translate([0,-4,0])union() {
+    hull() {
+      translate([3,3,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
+      translate([extruder_x-3,10,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
+      translate([extruder_x-3,3,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
+      translate([3,10,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
+    }
+      *cube([extruder_x, 13,distance_to_belt_center+6-3]);
+    }
     translate([12,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
     translate([23,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
-    translate([0,5,distance_to_belt_center+6-3])cube([extruder_x, 4, 6]);
+
+    translate([0,-4,0])
+    difference() {
+      hull() 
+      {
+        translate([extruder_x-3,10,distance_to_belt_center+6-3])cylinder(r=3, h=6, $fn=60);
+        translate([3,10,distance_to_belt_center+6-3])cylinder(r=3, h=6, $fn=60);
+      }
+      translate([0,5,distance_to_belt_center+6-3])
+      cube([extruder_x, 4, 6]);
+    }
+      translate([0,5,distance_to_belt_center+6-3])union() {
+      *cube([extruder_x, 4, 6]);
+      cube([extruder_x, 1, 6]);
+    }
     for (i = [ 0, extruder_x-6])
     {
       translate([i,-0.88,distance_to_belt_center+6-3])cube([6, 3.2, 6]);
