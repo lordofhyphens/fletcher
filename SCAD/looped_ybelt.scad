@@ -1,5 +1,7 @@
 padding=18;
 top_width=14.2;
+width=20;
+length=60;
 module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2)
 {
   hull() {
@@ -30,26 +32,26 @@ module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2)
 }
 difference() {
   union() {
-    cube([20,60,padding]);
-    translate([20-top_width,12.63,padding+16.9])beltloop();
+    cube([width,length,padding]);
+    translate([width-top_width,12.63,padding+16.9])beltloop();
   }
   translate([20/2,4.4+3/2, 0])cylinder(r=3/2 + 0.1, h=padding);
-  translate([20/2,60-(4.4+3/2), 0])cylinder(r=3/2 + 0.1, h=padding);
+  translate([20/2,length-(4.4+3/2), 0])cylinder(r=3/2 + 0.1, h=padding);
 }
 
 difference() {
   hull() {
-    translate([20-top_width,12.63-3,padding+16.8])cube([top_width,25+6,.1]);
-    translate([0,12.63-3,padding])cube([20,25+6,.1]);
+    translate([width-top_width,12.63-3,padding+16.8])cube([top_width,25+6,.1]);
+    translate([0,12.63-3,padding])cube([width,25+6,.1]);
   }
   for ( i = [12.63-3, 12.63 + 25 + 3])
   hull() {
-    translate([0,i,padding+3])rotate([0,90,0])cylinder(r=3, h=20,$fn=60);
-    translate([0,i,padding+3+40])rotate([0,90,0])cylinder(r=3, h=20,$fn=60);
+    translate([0,i,padding+3])rotate([0,90,0])cylinder(r=3, h=width,$fn=60);
+    translate([0,i,padding+3+40])rotate([0,90,0])cylinder(r=3, h=width,$fn=60);
   }
 }
 difference() {
-  translate([20,12.63,0]) 
+  translate([width,12.63,0]) 
   {
     hull() {
       translate([0,0,33.8])cube([19,4,3.1]);
@@ -59,10 +61,10 @@ difference() {
   }
   hull() {
     translate([0,0,33.8+3])
-      translate([23,12.63,0]) 
+      translate([width+3,12.63,0]) 
       rotate([-90,0,0])cylinder(r=3,h=25, $fn=60);
     translate([0,0,33.8+3])
-      translate([20+19,12.63,0]) 
+      translate([width+19,12.63,0]) 
       rotate([-90,0,0])cylinder(r=3,h=25, $fn=60);
   }
 }
