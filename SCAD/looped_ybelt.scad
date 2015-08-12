@@ -1,32 +1,32 @@
 padding=18;
 top_width=14.2;
-module beltloop()
+module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2)
 {
   hull() {
-  translate([top_width-(2.5+3.2+1.8),2.5,0])
-    cylinder(r=2.5,h=6.2,$fn=60);
-  translate([top_width-(0.2+3.2+1.8),8,0])
-    cylinder(r=.2,h=6.2,$fn=60);
+  translate([top_width-(circle_rad+wall_thick+belt_gap),circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
   }
   hull() {
-  translate([top_width-(2.5+3.2+1.8),22.5,0])
-    cylinder(r=2.5,h=6.2,$fn=60);
-  translate([top_width-(0.2+3.2+1.8),17,0])
-    cylinder(r=.2,h=6.2,$fn=60);
+  translate([top_width-(circle_rad+wall_thick+belt_gap),20+circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),17,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
   }
   hull() {
-  translate([top_width-(0.2+3.2+1.8),12,0])
-    cylinder(r=.2,h=6.2,$fn=60);
-  translate([top_width-(6+2.2+1.8),8,0])
-    cylinder(r=.2,h=6.2,$fn=60);
-  translate([top_width-(0.2+3.2+1.8),14,0])
-    cylinder(r=.2,h=6.2,$fn=60);
-  translate([top_width-(6+2.2+1.8),18,0])
-    cylinder(r=.2,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),12,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(belt_width.2+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),14,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(belt_width.2+belt_gap),18,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
   }
 
-  translate([top_width-3.2,0,0])
-    cube([3.2,25,6.2]);
+  translate([top_width-wall_width,0,0])
+    cube([wall_width,25,belt_width]);
 }
 difference() {
   union() {
