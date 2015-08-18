@@ -38,6 +38,7 @@ ACME14=6.5;// diameter of 1/4 inch ACME threaded rod in mm
 ACME14nut=12.8;// diameter of ACME 1/4 inch nut flat to flat in mm
 ACME14nutThickness=6.5;// thickness of ACME 1/4 inch nut in mm
 
+
 // Linear Bearings
 // format is IDxODxL
 lm8uu=[8, 15, 24];
@@ -55,11 +56,12 @@ rotaryBearing=xx623;// for readability(can be changed if other bearings are used
 //====================//
 // Basic Config Items //
 //====================//
-smoothRod=10;				// diameter of smooth rods in mm
-linearBearing=lm10uu;	// change this to the linear bearing you are using from the definitions section
-zRod=ACME14;				// change this to the z threaded rod you are using from the definitions section
-zRodnut=ACME14nut;		// change this to the z nut you are using from the definitions section
-zRodnutThickness=ACME14nutThickness;	// change this to the z nut thickness you are using from the definitions section
+smoothRod=8;				// diameter of smooth rods in mm
+linearBearing=lm8uu;	// change this to the linear bearing you are using from the definitions section
+zRod=M5;				// change this to the z threaded rod you are using from the definitions section
+zRodnut=M5nut;		// change this to the z nut you are using from the definitions section
+zRodnutThickness=M5nutThickness;	// change this to the z nut thickness you are using from the definitions section
+
 
 //=======================//
 // Advanced Config Items //
@@ -67,5 +69,6 @@ zRodnutThickness=ACME14nutThickness;	// change this to the z nut thickness you a
 $fn=250;		// default resolution for parts, decrease if part compiling or stl/gcode is unmanageable
 thickness=5;		// thickness of walls etc. in parts
 pullyDiameter=12.2;	// GT2-20 toothed section diameter
-smoothRodOffset=thickness*2+2+smoothRod/2;	// how far the centre of the z smooth rods are from the frame
-Flex3Drive=true;	// If the Flex3Drive is used
+
+// center of Z drive rod, relative to z travel rod
+shaft_offset=[35, 15];
