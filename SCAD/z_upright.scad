@@ -2,37 +2,19 @@ use <inc/functions.scad>
 use <MCAD/motors.scad>
 include<inc/configuration.scad>
 
-module roundcube(dims, r = 3, center = false)
-{
-  hull() {
-    if (center)
-    {
-      translate([r -dims[0]/2,r - dims[1]/2,-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([r -dims[0]/2,(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([dims[0]/2-(r),(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([dims[0]/2-(r),r - (dims[1]/2),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
 
-    } else {
-      translate([r,r,0]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([r,dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([dims[0]-(r),dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
-      translate([dims[0]-(r),r,0]) cylinder(r=r, h=dims[2], $fn=60);
-    }
-  }
-}
 tolerance=0.2;
-rod=8;
-length_to_hole=43;
-depth=10;
-panel_height=3.17;
-tab_length=93;
-height=54;
-fastener_hole=M5; 
-base_length=77-13; 
-z_rod_to_extrusion=length_to_hole-(rod/2)-13;
-base_width=z_rod_to_extrusion+13+25;
-back_wall_y=z_rod_to_extrusion+13+5;
-module z_lower() {
+module z_lower(height, panel_height) {
+  rod=8;
+  length_to_hole=43;
+  depth=10;
+  tab_length=93;
+  fastener_hole=M5; 
+  base_length=77-13; 
+  z_rod_to_extrusion=length_to_hole-(rod/2)-13;
+  base_width=z_rod_to_extrusion+13+25;
+  back_wall_y=z_rod_to_extrusion+13+5;
+
   difference() {
     union() {
       hull() {
@@ -73,6 +55,7 @@ module z_lower() {
 
     }
     // subtractions
+
     translate([0,0,height-depth]) cylinder(r=rod/2 + tolerance,h=height);
     cylinder(r=rod/4,h=height);
     translate([shaft_offset[0],shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance);
@@ -94,5 +77,35 @@ module z_lower() {
   }
 
 }
-z_lower();
-translate[150,0,0])mirror([0,1,0]) z_lower();
+
+module z_upper(height=25, tolerance=0.2) {
+  rod=8;
+  length_to_hole=43;
+  depth=height-3;
+  tab_length=93;
+  fastener_hole=M5; 
+  base_length=77-13; 
+  z_rod_to_extrusion=length_to_hole-(rod/2)-13;
+  base_width=z_rod_to_extrusion+13+25;
+  back_wall_y=z_rod_to_extrusion+13+5;
+
+  difference() {
+    union() {
+      hull() {
+        translate([0,z_rod_to_extrusion,height/2])roundcube([26,26,height], r=3,center=true);
+        translate([0,z_rod_to_extrusion+26,height/2])roundcube([26,26,height], r=3,center=true);
+        cylinder(r=17/2, h= height);
+      }
+    }
+    translate([0,0,height-depth]) cylinder(r=rod/2 + tolerance,h=height);
+    cylinder(r=rod/4,h=height);
+    translate([0,z_rod_to_extrusion,3])ext2020(l=26, depth=0.75, tolerance=tolerance);
+    translate([0,13+3+z_rod_to_extrusion,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
+    for (y = [53, 26]) 
+      translate([-20,y,((height-3) / 2)+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
+  }
+}
+translate([0,-100,0]) z_upper(height=23);
+translate([50,-100,0]) z_upper(height=23);
+z_lower(height=54, panel_height=3.17);
+translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);

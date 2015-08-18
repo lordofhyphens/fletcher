@@ -160,6 +160,27 @@ module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1, tolerance=0.2) {
       }
   }
 }
+/* 
+  Cube with rounded edges.
+*/
+module roundcube(dims, r = 3, center = false)
+{
+  hull() {
+    if (center)
+    {
+      translate([r -dims[0]/2,r - dims[1]/2,-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r -dims[0]/2,(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),r - (dims[1]/2),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+
+    } else {
+      translate([r,r,0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r,dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),r,0]) cylinder(r=r, h=dims[2], $fn=60);
+    }
+  }
+}
 
 module idler_assy(idler_bearing = [22, 7, 8, 1]) {
 
