@@ -66,7 +66,7 @@ zRodnutThickness=M5nutThickness;	// change this to the z nut thickness you are u
 //=======================//
 // Advanced Config Items //
 //=======================//
-$fn=250;		// default resolution for parts, decrease if part compiling or stl/gcode is unmanageable
+$fn=90;		// default resolution for parts, decrease if part compiling or stl/gcode is unmanageable
 thickness=5;		// thickness of walls etc. in parts
 pullyDiameter=12.2;	// GT2-20 toothed section diameter
 
