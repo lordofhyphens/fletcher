@@ -75,8 +75,6 @@ module x_motor() {
 }
 include <inc/configuration.scad>
 use <inc/functions.scad>
-belt_z_space = 16;
-rail_separation = belt_z_space + x_rod_thickness + 2; // minimum space between the top and bottom 
 outer_height=rail_separation+20+tolerance-1;
 
 shifted_rails=2;
