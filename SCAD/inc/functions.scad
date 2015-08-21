@@ -142,22 +142,43 @@ function idler_assy_r_inner(idler_bearing) = (idler_bearing[0] / 2) + (6 * singl
 //outer radius of the idler assembly (to smooth side of belt) 
 function idler_assy_r_outer(idler_bearing) = idler_assy_r_inner(idler_bearing) + belt_thickness + 1;
 
-module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1) {
-  scale([1.025,1.025,1])translate([0,0,l/2])
+module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1, tolerance=0.2) {
+  scale([1,1,1])translate([0,0,l/2])
   difference(){
-    cube([20,20,l], center=true);
-    scale([1,1/1.025,1]) {
+    cube([20+tolerance,20+tolerance,l], center=true);
+    scale([1,1,1]) {
         if (teeth[0] == 1)
-        translate([10-(depth+0.5),0,0])cube([2+depth,6,l], center=true);
+        translate([10-(depth+0.5)+tolerance,0,0])cube([2+depth-tolerance,6-tolerance,l], center=true);
         if (teeth[1] == 1)
-        translate([-10+(depth+0.5),0,0])cube([2+depth,6,l], center=true);
+        translate([-10+(depth+0.5)-tolerance,0,0])cube([2+depth-tolerance,6-tolerance,l], center=true);
     }
-    scale([1/1.025,1,1]) {
+    scale([1,1,1]) {
         if (teeth[2] == 1)
-        translate([0,10-(depth+0.5),0])cube([6,2+depth,l], center=true);
+        translate([0,10-(depth+0.5)+tolerance,0])cube([6-tolerance,2-tolerance+depth,l], center=true);
         if (teeth[3] == 1)
-        translate([0,-10+(depth+0.5),0])cube([6,2+depth,l], center=true);
+        translate([0,-10+(depth+0.5)-tolerance,0])cube([6-tolerance,2-tolerance+depth,l], center=true);
       }
+  }
+}
+/* 
+  Cube with rounded edges.
+*/
+module roundcube(dims, r = 3, center = false)
+{
+  hull() {
+    if (center)
+    {
+      translate([r -dims[0]/2,r - dims[1]/2,-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r -dims[0]/2,(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),(dims[1]/2)-(r),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]/2-(r),r - (dims[1]/2),-dims[2]/2]) cylinder(r=r, h=dims[2], $fn=60);
+
+    } else {
+      translate([r,r,0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([r,dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      translate([dims[0]-(r),r,0]) cylinder(r=r, h=dims[2], $fn=60);
+    }
   }
 }
 

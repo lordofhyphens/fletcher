@@ -63,7 +63,7 @@ module upper_bracket_single(angle1, fudge, support = true)
     translate([0,0,10])
     rotate([0,angles1[0],0])
     {
-      ext2020(l=40, teeth=[0,1,1,1]);
+      ext2020(l=40, teeth=[0,0,1,1]);
       translate([0,30,8])rotate([90,0,0])cylinder(r=5/2 + 0.1, h=60);
     }
     translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0]);

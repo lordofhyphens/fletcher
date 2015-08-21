@@ -1,60 +1,43 @@
-// Needs the SCAD from https://www.youmagine.com/designs/parametric-timing-belt-generator
-// to compile properly.
-mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
-belt_type = "loop";
-distance_to_belt_center = 13;
-print="mount"; // mount, standoff, or both
-if (belt_type=="toothed") 
+include <inc/configuration.scad>
+use <inc/functions.scad>
+module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2, top_width=13, top_length=25)
 {
-translate([plate[0]/2-extruder_x/2,plate[1]/2 + 3.5,0])
-  difference()
-  {
-    translate([0,-4,0])cube([extruder_x, 13,distance_to_belt_center+6-3]);
-    translate([0,3,distance_to_belt_center]) { scale([1,1,1.4])
-      mirror([0,1,0])belting(print_layout="straight", tooth_profile="GT2_2mm", belt_length=extruder_x);
-      translate([extruder_x/2 - 3,-5,0])cube([6, 5,distance_to_belt_center]);
-      translate([0,-7.5,0])cube([extruder_x, 3,distance_to_belt_center]);
-    }
+  hull() {
+  translate([top_width-(circle_rad+wall_thick+belt_gap),circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
   }
+  hull() {
+  translate([top_width-(circle_rad+wall_thick+belt_gap),20+circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),17,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  }
+  hull() {
+  translate([top_width-(0.2+wall_thick+belt_gap),12,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(6+2.2+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),14,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(6+2.2+belt_gap),18,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  }
+
+  translate([top_width-wall_thick,0,0])
+    cube([wall_thick,top_length,belt_width]);
 }
+mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 
-if (belt_type=="loop") 
-translate([plate[0]/2-extruder_x/2,plate[1]/2 + 4.5,0])
-{
-    translate([0,-4,0])union() {
-    hull() {
-      translate([3,3,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
-      translate([extruder_x-3,10,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
-      translate([extruder_x-3,3,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
-      translate([3,10,0])cylinder(r=3,h=distance_to_belt_center+6-3, $fn=60);
-    }
-      *cube([extruder_x, 13,distance_to_belt_center+6-3]);
-    }
-    translate([12,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
-    translate([23,-0.44+0.56,distance_to_belt_center+6-3])cylinder(r=3,h=6,$fn=60);
-
-    translate([0,-4,0])
-    difference() {
-      hull() 
-      {
-        translate([extruder_x-3,10,distance_to_belt_center+6-3])cylinder(r=3, h=6, $fn=60);
-        translate([3,10,distance_to_belt_center+6-3])cylinder(r=3, h=6, $fn=60);
-      }
-      translate([0,5,distance_to_belt_center+6-3])
-      cube([extruder_x, 4, 6]);
-    }
-      translate([0,5,distance_to_belt_center+6-3])union() {
-      *cube([extruder_x, 4, 6]);
-      cube([extruder_x, 1, 6]);
-    }
-    for (i = [ 0, extruder_x-6])
-    {
-      translate([i,-0.88,distance_to_belt_center+6-3])cube([6, 3.2, 6]);
-    }
+wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
+distance_to_belt_center = 13;
+union() {
+  translate([0,0,(belt_z_space-3/2)-5])roundcube([extruder_x, belt_z_space-4,belt_z_space-3], center=true);
+  translate([-25/2,-7,(belt_z_space)])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25);
 }
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
-rail_separation = 48;
 rail_size = 20;
 wheel_offset = 20;
 wheel_od = 25;
@@ -70,84 +53,52 @@ prusa_x_sep = 30;
 prusa_y_sep = 0;
 
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
-plate_y = (rail_size + rail_separation + wheel_offset * 2 > extruder_z ? rail_size+ rail_separation + wheel_offset * 2 : extruder_z);
+plate_y = wheel_separation + 20;
 plate = [extruder_x + 20, plate_y, 7];
-if (print == "both" || print == "standoff")
+
 if (standoff) 
   translate([plate[0]*2,0,0])
   difference() {
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      hull() 
-      {
-        $fn = 60;
-        translate([5, 5, 0]) cylinder(r=5, h=7);
-        translate([extruder_x-5, extruder_z-5, 0]) cylinder(r=5, h=7);
-        translate([extruder_x-5, 5, 0]) cylinder(r=5, h=7);
-        translate([5, extruder_z-5, 0]) cylinder(r=5, h=7);
-        *cube([extruder_x,extruder_z,7]);
-      }
+      cube([extruder_x,extruder_z,7]);
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      translate([-10,-13,5])
+      translate([-10,-10,5])
         for (j = [1,-1]) // extruder reworking holes
           for (i = [1,-1])
             translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
             {
               translate([0,-21.5,0]) {
-                translate([0,0,5])mirror([0,0,1])scale([1.10,1.10,1])boltHole(size=4,length=15, $fs=0.1);
+                translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
               } 
             }
 
   }
 difference() {
-    hull() {
-      $fn = 60;
-      translate([5,5,0])cylinder(r=5, h=plate[2]);
-      translate([plate[0]-5, 5, 0])cylinder(r=5, h=plate[2]);
-      translate([5, plate[1]-5, 0])cylinder(r=5, h=plate[2]);
-      translate([plate[0]-5,plate[1]-5,0])cylinder(r=5, h=plate[2]);
-    }
-    // general spots for cable management
-    for (j = [4, 30])
-      for (i = [1, -1])
-      {
-        translate([plate[0]/2+ i*6,plate[1] - j,0]) cylinder(r=2,h=20, $fn=60);
-      }
-    translate([0,10,0])
+    translate([0,0,plate[2]/2])cube(plate, center=true);
+    translate([0,0,0])
     { // holes for v wheel mounting
-      translate([0,plate[1] -(2*wheel_offset+rail_separation+rail_size-0.55), 0]) 
+    for (i = [1 , -1])
+      color("blue")translate([0,i*wheel_separation/2, 0]) 
       {
-        translate([plate[0]/2 - (2+ wheel_od/2), 0,0])
+        translate([-plate[0]/2 + M5nut, 0,0])
         {
-          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          cylinder(r=M5/2 + tolerance, h=plate[2],  $fs=0.1);
           nutHole(size=5);
         }
-        translate([plate[0]/2 + 2+wheel_od/2,0,0])
+        translate([plate[0]/2 - M5nut,0,0])
         {
-          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
-          nutHole(size=5);
-        }
-      }
-      translate([0,plate[1] - wheel_offset, 0]) 
-      {
-        translate([plate[0]/2 - (2+ wheel_od/2), 0,0])
-        {
-          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
-          nutHole(size=5);
-        }
-        translate([plate[0]/2 + 2+wheel_od/2,0,0])
-        {
-          cylinder(r=m5_diameter/2 + 0.1, h=plate[2],  $fs=0.1);
+          cylinder(r=M5/2 + tolerance, h=plate[2],  $fs=0.1);
           nutHole(size=5);
         }
       }
     }
   if (mount_type == "rework")
   {
-    translate([0,-19,0])
+    translate([0,-25,0])
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
-          translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
-              translate([0,0,3.8])mirror([0,0,1])scale([1.10,1.10,1])boltHole(size=4,length=7);
+          translate([i*rework_x_sep/2, j*rework_y_sep/2,0])
+              translate([0,0,3.8])mirror([0,0,1])boltHole(size=4,length=7);
   }
   else if (mount_type == "prusa")
   {
@@ -178,12 +129,12 @@ difference() {
           if (standoff)
           {
             translate([0,-21.5,0]) {
-              translate([0,0,5])mirror([0,0,1])scale([1.05,1.05,1])boltHole(size=4,length=15, $fs=0.1);
+              translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
             }
           } 
           else  
           {
-            translate([0,0,5])mirror([0,0,1])scale([1.05,1.05,1])boltHole(size=4,length=7);
+            translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=7);
           }
         }
   }
