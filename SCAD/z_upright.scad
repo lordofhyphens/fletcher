@@ -7,7 +7,6 @@ tolerance=0.2;
 
 module z_lower(height, panel_height, motor=false) {
   rod=8;
-  length_to_hole=43;
   depth=10;
   tab_length=93;
   fastener_hole=M5; 
@@ -147,8 +146,7 @@ module z_upper(height=25, tolerance=0.2, motor=true)
     }
   }
 }
-*translate([0,-100,0]) z_upper(height=23);
-*translate([50,-100,0]) z_upper(height=23);
+translate([0,-100,0]) z_upper(height=23);
+translate([-50,-100,0]) mirror([1,0,0]) z_upper(height=23);
 z_lower(height=54, panel_height=3.17);
-*translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);
-*z_upper(height=23);
+translate([0,150,0])mirror([0,1,0]) z_lower(height=54, panel_height=3.17);

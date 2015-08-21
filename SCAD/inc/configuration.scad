@@ -74,3 +74,4 @@ pullyDiameter=12.2;	// GT2-20 toothed section diameter
 shaft_offset=[40, 15];
 x_rod_thickness=20;
 length_to_hole=43;
+bearing_to_vslot=9.63;
