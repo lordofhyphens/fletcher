@@ -59,9 +59,9 @@ module x_motor() {
       }
       translate([lm8uu[1]+9,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
       translate([(2*28/3)+shifted_rails,length_to_hole-10,0])roundcube([28,30,outer_height]);
-      translate([lm8uu[1]+9,shaft_offset[1]+zRod-3,0])roundcube([38-9,zRodnut+4+6,3+zRodnutThickness]);
+      translate([lm8uu[1]+9,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
 
-      translate([lm8uu[1]+10,-38-5,0])roundcube([5,45,16]);
+      translate([lm8uu[1]+10,-38-5,0])roundcube([5,45,20]);
       hull() translate([lm8uu[1]+10,0,40])
       {
         rotate([0,90,0])cylinder(r=3,h=7);
