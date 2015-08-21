@@ -85,7 +85,12 @@ module z_lower(height, panel_height, motor=false) {
     {
       translate([shaft_offset[0],shaft_offset[1],0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance);
     }
-    translate([0,z_rod_to_extrusion,panel_height]) ext2020(l=height,depth=0.75, tolerance=tolerance);
+    translate([0,z_rod_to_extrusion,panel_height]) 
+    {
+      ext2020(l=height,depth=0.75, tolerance=tolerance);
+      translate([-15,0,(15/2)+3])rotate([0,90,0])cylinder(r=M5/2+tolerance, h=30);
+      translate([-15,0,height-15])rotate([0,90,0])cylinder(r=M5/2+tolerance, h=30);
+    }
     translate([0,z_rod_to_extrusion,panel_height]) cube([7,7,height],center=true);
 
     union() {
@@ -137,7 +142,10 @@ module z_upper(height=25, tolerance=0.2, motor=true)
     }
     translate([0,0,height-depth]) cylinder(r=rod/2 + tolerance,h=height);
     cylinder(r=rod/4,h=height);
-    translate([0,z_rod_to_extrusion,3])ext2020(l=26, depth=0.75, tolerance=tolerance);
+    translate([0,z_rod_to_extrusion,3]) {
+      ext2020(l=26, depth=0.75, tolerance=tolerance);
+      cube([10,10,10],center=true);
+    }
     translate([0,13+3+z_rod_to_extrusion,3+20/2])rotate([-90,0,0])ext2020(l=26, depth=0.75,teeth=[0,0,1,0], tolerance=tolerance);
     for (y = [53, 26]) 
       translate([-20,y,((height-3) / 2)+3])rotate([0,90,0])cylinder(r=M5/2 + tolerance, h=40);
