@@ -1,5 +1,7 @@
 tolerance=0.2;
-belt_space_cutout=8;
+belt_space_cutout=9.5;
+end_body_shift=13;
+shifted_rails=end_body_shift-7;
 
 module x_idler(idler_cutouts=true) {
   difference() {
@@ -8,12 +10,12 @@ module x_idler(idler_cutouts=true) {
         hull() {
           cylinder(r=lm8uu[1]/2 + 3, h = lm8uu[2]*2); // outer
           translate([-((lm8uu[1]/2)+4), -((lm8uu[1]/2)+4),0])
-            translate([lm8uu[1]+12,0,0])roundcube([lm8uu[1],lm8uu[1],lm8uu[2]*2]);
+            translate([lm8uu[1]+end_body_shift+4,0,0])roundcube([lm8uu[1],lm8uu[1],lm8uu[2]*2]);
         }
       }
-      translate([lm8uu[1]+9,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
+      translate([lm8uu[1]+end_body_shift,0,0])roundcube([18,length_to_hole+20,lm8uu[2]*2]);
       translate([(2*28/3)+shifted_rails,length_to_hole-10,0])roundcube([28,30,outer_height]);
-      translate([lm8uu[1]+9,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
+      translate([lm8uu[1]+end_body_shift,shaft_offset[1]+zRod-3,0])roundcube([shaft_offset[0]-(lm8uu[1]/2)+3,zRodnut+4+6,3+zRodnutThickness]);
     }
 
     union() {
@@ -25,7 +27,7 @@ module x_idler(idler_cutouts=true) {
         translate([shaft_offset[0], shaft_offset[1], 0]) 
         {
           cylinder(r=zRod/2, h=10);
-          translate([0,0,3])cylinder(r=zRodnut/2, h=zRodnutThickness, $fn=6);
+          translate([0,0,3])cylinder(r=zRodnut/2 + tolerance, h=zRodnutThickness+tolerance, $fn=6);
         }
       }
       translate([28/2+(2*28/3)+shifted_rails,length_to_hole,0])
@@ -59,8 +61,8 @@ module x_motor() {
   x_idler(idler_cutouts=false);
   difference() {
     union() {
-      translate([lm8uu[1]+10,-38-5,0])roundcube([5,45,20]);
-      hull() translate([lm8uu[1]+10,0,40])
+      translate([lm8uu[1]+end_body_shift,-38-5,0])roundcube([5,45,20]);
+      hull() translate([lm8uu[1]+end_body_shift,0,40])
       {
         rotate([0,90,0])cylinder(r=3,h=7);
         translate([0,-10,5])
@@ -77,7 +79,6 @@ include <inc/configuration.scad>
 use <inc/functions.scad>
 outer_height=rail_separation+20+tolerance-1;
 
-shifted_rails=2;
 mirror([0,1,0])
 x_motor();
 translate([-60,-60,0])
