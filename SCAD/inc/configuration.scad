@@ -71,4 +71,6 @@ thickness=5;		// thickness of walls etc. in parts
 pullyDiameter=12.2;	// GT2-20 toothed section diameter
 
 // center of Z drive rod, relative to z travel rod
-shaft_offset=[35, 15];
+shaft_offset=[40, 15];
+x_rod_thickness=20;
+length_to_hole=43;
