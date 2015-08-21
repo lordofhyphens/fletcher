@@ -1,14 +1,41 @@
 include <inc/configuration.scad>
-// Needs the SCAD from https://www.youmagine.com/designs/parametric-timing-belt-generator
-// to compile properly.
+use <inc/functions.scad>
+module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2, top_width=13, top_length=25)
+{
+  hull() {
+  translate([top_width-(circle_rad+wall_thick+belt_gap),circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  }
+  hull() {
+  translate([top_width-(circle_rad+wall_thick+belt_gap),20+circle_rad,0])
+    cylinder(r=circle_rad,h=6.2,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),17,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  }
+  hull() {
+  translate([top_width-(0.2+wall_thick+belt_gap),12,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(6+2.2+belt_gap),8,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(0.2+wall_thick+belt_gap),14,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  translate([top_width-(6+2.2+belt_gap),18,0])
+    cylinder(r=.2,h=belt_width,$fn=60);
+  }
+
+  translate([top_width-wall_thick,0,0])
+    cube([wall_thick,top_length,belt_width]);
+}
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 
 wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
-  difference()
-  {
-    translate([0,0,(belt_z_space-3/2)])cube([extruder_x, 13,belt_z_space-3], center=true);
-  }
+union() {
+  translate([0,0,(belt_z_space-3/2)-5])roundcube([extruder_x, belt_z_space-4,belt_z_space-3], center=true);
+  translate([-25/2,-7,(belt_z_space)])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25);
+}
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
 rail_size = 20;
