@@ -60,7 +60,7 @@ if (standoff)
   translate([plate[0]*2,0,0])
   difference() {
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      cube([extruder_x,extruder_z,7]);
+      roundcube([extruder_x,extruder_z,7]);
       translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
       translate([-10,-10,5])
         for (j = [1,-1]) // extruder reworking holes
@@ -74,7 +74,7 @@ if (standoff)
 
   }
 difference() {
-    translate([0,0,plate[2]/2])cube(plate, center=true);
+    translate([0,0,plate[2]/2])roundcube(plate, center=true);
     translate([0,0,0])
     { // holes for v wheel mounting
     for (i = [1 , -1])

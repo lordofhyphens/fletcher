@@ -181,6 +181,35 @@ module roundcube(dims, r = 3, center = false)
     }
   }
 }
+module filletcube(dims, r = 3, center = false, fillet_width=1.5, fillet_depth=0.2)
+{
+  hull() {
+    if (center)
+    {
+      for (i = [1, -1]) {
+        for (j = [1, -1]) {
+          translate([r -i*dims[0]/2,r - j*dims[1]/2,0]) cylinder(r=r, h=dims[2]*(1-fillet_depth), $fn=60, center=true);
+          translate([r -i*dims[0]/2,r - j*dims[1]/2,dims[2]*.8/2]) cylinder(r1=r,r2=fillet_depth, h=dims[2]*(fillet_depth/2), $fn=60, center=true);
+          translate([r -i*dims[0]/2,r - j*dims[1]/2,-dims[2]*.8/2]) cylinder(r1=fillet_depth,r2=r, h=dims[2]*(fillet_depth/2), $fn=60, center=true);
+        }
+      }
+
+    } else {
+      translate([0,0,dims[2]/2])
+      for (i = [r, dims[0]-r]) {
+        for (j = [dims[1]-r, r]) {
+          translate([i, j, 0]) cylinder(r=r, h=dims[2]*(1-fillet_depth), $fn=60, center=true);
+          translate([i, j, dims[2]*.8/2]) cylinder(r1=r,r2=fillet_depth, h=dims[2]*(fillet_depth/2), $fn=60, center=true);
+          translate([i, j, -dims[2]*.8/2]) cylinder(r1=fillet_depth,r2=r, h=dims[2]*(fillet_depth/2), $fn=60, center=true);
+        }
+      }
+      *translate([r,r,0]) cylinder(r=r, h=dims[2], $fn=60);
+      *translate([r,dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      *translate([dims[0]-(r),dims[1]-(r),0]) cylinder(r=r, h=dims[2], $fn=60);
+      *translate([dims[0]-(r),r,0]) cylinder(r=r, h=dims[2], $fn=60);
+    }
+  }
+}
 
 module idler_assy(idler_bearing = [22, 7, 8, 1]) {
 
