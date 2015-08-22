@@ -1,4 +1,4 @@
-tolerance=0.2;
+tolerance=0.25;
 belt_space_cutout=9.5;
 end_body_shift=13;
 shifted_rails=end_body_shift-7;

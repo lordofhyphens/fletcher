@@ -29,12 +29,15 @@ module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2, t
     cube([wall_thick,top_length,belt_width]);
 }
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
-
-wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
+measured_rail_edge_to_edge=58.82;
+bearing_to_vslot=10.5;
+wheel_separation = measured_rail_edge_to_edge+(2*bearing_to_vslot);
+echo(bearing_to_vslot);
+//wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
 union() {
-  translate([0,0,(belt_z_space-3/2)-5])roundcube([extruder_x, belt_z_space-4,belt_z_space-3], center=true);
-  translate([-25/2,-7,(belt_z_space)])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25);
+  translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x, belt_z_space-4,belt_z_space-3], center=true);
+  translate([-25/2,-7,(belt_z_space)+2])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25);
 }
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
@@ -143,4 +146,3 @@ difference() {
 
 include<inc/metric.scad>
 include<MCAD/nuts_and_bolts.scad> // MCAD library
-use<Belt_Generator.scad> // https://www.youmagine.com/designs/parametric-timing-belt-generator
