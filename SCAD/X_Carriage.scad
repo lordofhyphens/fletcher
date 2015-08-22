@@ -30,7 +30,7 @@ module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2, t
 }
 mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version to fit properly.
 measured_rail_edge_to_edge=58.82;
-bearing_to_vslot=10.5;
+bearing_to_vslot=10.10;
 wheel_separation = measured_rail_edge_to_edge+(2*bearing_to_vslot);
 echo(bearing_to_vslot);
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;

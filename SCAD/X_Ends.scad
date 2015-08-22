@@ -61,17 +61,17 @@ module x_motor() {
   x_idler(idler_cutouts=false);
   difference() {
     union() {
-      translate([lm8uu[1]+end_body_shift,-38-5,0])roundcube([5,45,20]);
+      translate([lm8uu[1]+end_body_shift,-38-5,0])roundcube([5,49,20]);
       hull() translate([lm8uu[1]+end_body_shift,0,40])
       {
         rotate([0,90,0])cylinder(r=3,h=7);
-        translate([0,-10,5])
+        translate([0,-11,5])
           rotate([0,90,0])cylinder(r=3,h=7);
         translate([0,0,5])
           rotate([0,90,0])cylinder(r=3,h=7);
       }
     }
-    translate([28/2+(2*28/3)+shifted_rails+0,-20,20+1]) translate([-12,0,belt_z_space/2])rotate([0,90,0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance);
+    translate([28/2+(2*28/3)+shifted_rails+0,-23,20+1]) translate([-12,0,belt_z_space/2])rotate([0,90,0])linear_extrude(height=10)stepper_motor_mount(17, mochup=false, tolerance=tolerance);
 
   }
 }
