@@ -4,13 +4,13 @@ module beltloop(belt_gap=1.8, wall_thick=3.2,circle_rad = 2.5, belt_width=6.2, t
 {
   hull() {
   translate([top_width-(circle_rad+wall_thick+belt_gap),circle_rad,0])
-    cylinder(r=circle_rad,h=6.2,$fn=60);
+    cylinder(r=circle_rad,h=belt_width,$fn=60);
   translate([top_width-(0.2+wall_thick+belt_gap),8,0])
     cylinder(r=.2,h=belt_width,$fn=60);
   }
   hull() {
   translate([top_width-(circle_rad+wall_thick+belt_gap),20+circle_rad,0])
-    cylinder(r=circle_rad,h=6.2,$fn=60);
+    cylinder(r=circle_rad,h=belt_width,$fn=60);
   translate([top_width-(0.2+wall_thick+belt_gap),17,0])
     cylinder(r=.2,h=belt_width,$fn=60);
   }
@@ -35,9 +35,10 @@ wheel_separation = measured_rail_edge_to_edge+(2*bearing_to_vslot);
 echo(bearing_to_vslot);
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
+shift_in=3.5;
 union() {
-  translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x, belt_z_space-4,belt_z_space-3], center=true);
-  translate([-25/2,-7,(belt_z_space)+2])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25);
+  translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x, belt_z_space-4,belt_z_space-3-shift_in], center=true);
+  translate([-25/2,-7,(belt_z_space)+2-shift_in])rotate([0,0,-90])mirror([1,0,0])beltloop(top_width=13, top_length=25, belt_width=6.2+shift_in);
 }
 
 standoff = (mount_type == "rework" ? true : false); // standoff shouldn't be necessary for wades or prusa-type
