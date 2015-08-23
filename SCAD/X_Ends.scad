@@ -30,18 +30,18 @@ module x_idler(idler_cutouts=true) {
           translate([0,0,3])cylinder(r=zRodnut/2 + tolerance, h=zRodnutThickness+tolerance, $fn=6);
         }
       }
-      translate([28/2+(2*28/3)+shifted_rails,length_to_hole,0])
+      translate([28/2+(2*28/3)+shifted_rails,length_to_hole-6.5,0])
         translate([0,0,0])rotate([0,0,90])union() {
           translate([0,0,rail_separation])
           {
             translate([0,0,(20+tolerance)/2])
-              rotate([0,90,0])ext2020(l=21, tolerance=tolerance, teeth=[1,0,0,0]);
-            translate([9,15,10])rotate([90,90,0])cylinder(r=M5/2 + tolerance, h = 30);
+              rotate([0,90,0])ext2020(l=31, tolerance=tolerance, teeth=[1,0,0,0]);
+            translate([14,15,10])rotate([90,90,0])cylinder(r=M5/2 + tolerance, h = 30);
           }
           translate([0,0,(20+tolerance)/2])
             rotate([0,90,0])
-            ext2020(l=21, tolerance=tolerance,teeth=[0,0,0,0] );
-          translate([9,15,10])rotate([90,90,0])cylinder(r=M5/2 + tolerance, h = 30);
+            ext2020(l=31, tolerance=tolerance,teeth=[0,0,0,0] );
+          translate([14,15,10])rotate([90,90,0])cylinder(r=M5/2 + tolerance, h = 30);
         }
 
       translate([28/2+(2*28/3)+shifted_rails,0,20+1]) translate([0,0,belt_z_space/2]) rotate([90,0,0])roundcube([belt_space_cutout, belt_z_space,300], center=true);
