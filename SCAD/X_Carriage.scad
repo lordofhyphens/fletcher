@@ -32,7 +32,6 @@ mount_type="rework"; // wades, prusa, or rework. Rework needs a compact-version 
 measured_rail_edge_to_edge=58.82;
 bearing_to_vslot=10.10;
 wheel_separation = measured_rail_edge_to_edge+(2*bearing_to_vslot);
-echo(bearing_to_vslot);
 //wheel_separation = rail_separation+(2*bearing_to_vslot)+x_rod_thickness;
 distance_to_belt_center = 13;
 shift_in=3.5;
@@ -59,7 +58,7 @@ prusa_y_sep = 0;
 plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = wheel_separation + 20;
 plate = [extruder_x + 20, plate_y, 7];
-
+echo("Tolerance: ", tolerance);
 if (standoff) 
   translate([plate[0]*2,0,0])
   difference() {
@@ -87,12 +86,12 @@ difference() {
         translate([-plate[0]/2 + M5nut, 0,0])
         {
           cylinder(r=M5/2 + tolerance, h=plate[2],  $fs=0.1);
-          nutHole(size=5);
+          cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
         }
         translate([plate[0]/2 - M5nut,0,0])
         {
-          cylinder(r=M5/2 + tolerance, h=plate[2],  $fs=0.1);
-          nutHole(size=5);
+          cylinder(r=M5/2 + tolerance*2, h=plate[2],  $fs=0.1);
+          cylinder(r=M5nut/2 + tolerance*2, h=M5nutThickness,  $fn=6);
         }
       }
     }
