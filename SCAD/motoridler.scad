@@ -7,10 +7,10 @@ difference() {
     translate([0,0,2.5])roundcube([50,50,5], center=true);
   }
   scale([1,1,1.2]) {
-  translate([45,30,10])rotate([90,90,0]) ext2020(l=60, teeth=[0,0,0,0]);
-  translate([65,30,10])rotate([90,90,0]) ext2020(l=60, teeth=[0,0,0,0]);
-  translate([45,30,10])rotate([90,90,0]) ext2020(l=60, teeth=[0,0,0,0]);
-  translate([40,30,10])rotate([90,90,0]) ext2020(l=60, teeth=[0,0,0,0]);
+  translate([45,35,10])rotate([90,90,0]) ext2020(l=70, teeth=[0,0,0,0]);
+  translate([65,35,10])rotate([90,90,0]) ext2020(l=70, teeth=[0,0,0,0]);
+  translate([45,35,10])rotate([90,90,0]) ext2020(l=70, teeth=[0,0,0,0]);
+  translate([40,35,10])rotate([90,90,0]) ext2020(l=70, teeth=[0,0,0,0]);
   }
   translate([40,0,0])
     hull(){
