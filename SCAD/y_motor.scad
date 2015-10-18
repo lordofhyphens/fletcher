@@ -8,7 +8,7 @@ difference()
     translate([0,40+4/2,(20+5+z_shift)/2])cube([width,4,20+5+z_shift],center=true);
   }
   translate([0,20,0])#linear_extrude(height=10)stepper_motor_mount(17);
-  translate([0,width/2,5/2+5])#cube([width,width,5],center=true);
+  translate([0,40/2,5/2+5])#cube([width,40,5],center=true);
   translate([0,35,10+10])
   for (i = [1, -1])
   {
@@ -21,12 +21,12 @@ difference() {
     for (i = [1, -1]) {
       hull() {
         translate([i*20,0,0])cylinder(d=M3,h=12);
-        translate([i*20,width+4-M3/2,0])cylinder(d=M3,h=30);
+        translate([i*20,40+4-M3/2,0])cylinder(d=M3,h=30);
       }
     }
     hull() {
       translate([20,10,0])cylinder(d=M3,h=30);
-      translate([20,width+4-M3/2,0])cylinder(d=M3,h=30);
+      translate([20,40+4-M3/2,0])cylinder(d=M3,h=30);
     }
   }
   translate([25,20,15])rotate([0,-90,0])#cylinder(d=2.5+0.3,h=7);
