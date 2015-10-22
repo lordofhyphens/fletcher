@@ -25,7 +25,7 @@ difference() {
     translate([0,0,(belt_z_space-3/2)-3])roundcube([extruder_x*1.2, belt_z_space-4,belt_z_space-3-shift_in], center=true);
     *translate([0,0,belt_z_space])rotate([0,0,-90])beltloop(top_width=13, top_length=extruder_x*1.2, belt_width=6.2+shift_in);
   }
-  translate([0,2,plate[2]]) {
+  translate([0,-2,plate[2]]) {
     for (i = [-8,8])
     translate([i,0,0])
     cylinder(r=M3/2, h=20);
@@ -53,10 +53,13 @@ echo("Tolerance: ", tolerance);
   if (standoff) 
 translate([plate[0]*2,0,0])
   difference() {
+    translate([plate[0]/2 - ((extruder_x-2)/2), plate[1]/2 - extruder_z/2,0])
+      roundcube([extruder_x-2,extruder_z,7]);
+
     translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      roundcube([extruder_x,extruder_z,7]);
+    translate([extruder_x/2,extruder_z/2-8,0])cylinder(r=8, h=20);
     translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
-      translate([-10,-10,5])
+      translate([-10,-10,5]) {
       for (j = [1,-1]) // extruder reworking holes
         for (i = [1,-1])
           translate([plate[0]/2 + i*rework_x_sep/2, plate[1]/2 + j*rework_y_sep/2,0])
@@ -65,7 +68,7 @@ translate([plate[0]*2,0,0])
               #translate([0,0,5])mirror([0,0,1])boltHole(size=4,length=15, $fs=0.1);
             } 
           }
-
+      }
   }
 difference() {
   translate([0,0,plate[2]/2])roundcube(plate, center=true);
