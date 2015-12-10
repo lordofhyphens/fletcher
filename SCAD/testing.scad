@@ -146,6 +146,22 @@ module x_end() {
         }
     }
     if (show_hardware) {
+        // (optionally) show external hardware bolted onto this
+        // V wheels
+        for (j = [0,end_height-20]) {
+            for (i = [-1,1]) {
+                translate([i*(20+vwheel_r()),0,j+vwheel_r()])
+                    translate([0,0,M5/2]) // compensating for rotation
+                    {
+                        translate([0,-(distance_from_2040+5),0])
+                            rotate([-90,0,0])#cylinder(d=M5+tolerance, h=m5_screw_length);
+                        translate([0,-(distance_from_2040+5),0])
+                            rotate([-90,0,0])vwheel()
+                            translate([0,15.5-tolerance,0])rotate([-90,0,0])rotate([0,0,90])#cylinder(d=M5nut+tolerance, h=M5nutThickness+tolerance,$fn=6);
+                    }
+            }
+        }
+
         // center pulleys
 #translate([center_pulley_channel,0,0])
         for (i=[5,7]) {
