@@ -1,138 +1,80 @@
-// PRUSA iteration3
-// Configuration file
-// GNU GPL v3
-// Josef Průša <josefprusa@me.com>
-// Václav 'ax' Hůla <axtheb@gmail.com>
-// http://www.reprap.org/wiki/Prusa_Mendel
-// http://github.com/josefprusa/Prusa3
+// Copyright (C) 2012 t00tie
+// Adapto is licensed under the Creative Commons - GNU GPL license.
+// http://creativecommons.org/licenses/GPL/2.0/
 
-include <inc/metric.scad>;
-include <inc/conf_bushing.scad>;
+//==========================================================================//
+// Configuration file for Adapto OpenSCAD files                             //
+// Scroll past the definition section to change basic and advanced settings //
+//==========================================================================//
 
-// Custom settings here, tailor to your supplies and print settings
+//====================//
+// Definition Section //
+//====================//
+// Frame and Walls
+// frameX and frameY are the dimensions of the frame material when viewed on end(the end of an extrusion looks roughly like an X)
+// frameX is the width of the frame material
+// frameY is the height of the frame material
+//   x
+//  [ ]y
+// these are used to find offsets for screw placing so screws meet the (slot in the) middle of the frame
+frameX=20;// width of the frame material(alu, wood etc.)
+frameY=20;// height of the frame material
 
-// Extruder settings **********************************************************
-// Don't forget to set your slicer's extruder settings to match the values you
-// enter here.
+// Print the hole_calibration.scad object to dial in the next 6 settings
+// Google found http://www.fairburyfastener.com/xdims_metric_nuts.htm
+M8=8.4;// diameter of M8 threaded rod
+M5=5.3;// diameter of M5 threaded rod
+M3=3.4;// diameter of M3 threaded rod
+M8nut=13;// diameter of M8 nut flat to flat
+M5nut=8;// diameter of M5 nut flat to flat
+M3nut=5.6;// diameter of M3 nut flat to flat
 
-layer_height = 0.25;
-// Width over thickness determines how wide the plastic will be when extruded
-// onto the object that is being printed. width_over_thickness is multiplied
-// by the layer_height to calculate this width. i.e. If your layer_height is
-// set to 0.3 mm and your width_over_thickness is set to 2.2, the resulting
-// width will be 0.66 mm.
-width_over_thickness = 2.35;
+M8nutThickness=6.8;// thickness of a standard M8 nut(nylock is 8mm)
+M5nutThickness=4.7;// thickness of a standard M5 nut(nylock is 5mm)
+M3nutThickness=2.4;// thickness of a standard M3 nut
 
-// Select your belt type ******************************************************
-
-// T2.5
-//belt_width = 6.5;  //add 0.5 to actual width
-//belt_tooth_distance = 2.5;
-//belt_tooth_ratio = 0.75;
-//belt_thickness = 0.8;
-
-// T5 (strongly discouraged)
-//belt_width = 6.5;
-//belt_tooth_distance = 5;
-//belt_tooth_ratio = 0.75;
-//belt_thickness = 0.8;
-
-// HTD3
-//belt_width = 9.5;
-//belt_tooth_distance = 3;
-//belt_tooth_ratio = 0.75;
-//belt_thickness = 1.75;
-
-// MXL
-//belt_width = 6.5;
-//belt_tooth_distance = 2.032;
-//belt_tooth_ratio = 0.64;
-//belt_thickness = i have no idea;
-
-// GT2 
-// there is bunch of GT2 belts with different tooth-to-tooth distance
-// this one is most common in reprap world
-// adjust to your needs.
-belt_width = 6.5;
-belt_tooth_distance = 3;
-belt_tooth_ratio = 0.5;
-belt_thickness = 0.8;
-
-// Choose bearing/bushing configuration ***************************************
-// conf_b_* are in inc/conf_bushing.scad
-
-bushing_xy = conf_b_lm8uu;
-bushing_z = conf_b_lm8uu;
-// for longer bearings use one shorter in x-carriage to make place for belt attachment
-// by default use same as xy
-bushing_carriage = bushing_xy;
+// Acme Linear Screw and Nut
+ACME14=6.5;// diameter of 1/4 inch ACME threaded rod in mm
+ACME14nut=12.8;// diameter of ACME 1/4 inch nut flat to flat in mm
+ACME14nutThickness=6.5;// thickness of ACME 1/4 inch nut in mm
 
 
-// Select idler bearing size **************************************************
-// bearing_* are in inc/conf_bushing.scadn
+// Linear Bearings
+// format is IDxODxL
+lm8uu=[8, 15, 24];
+lm10uu=[10, 19, 29];
+lm10luu=[10, 19, 55];
+lm12uu=[12, 21, 30];
 
-idler_bearing = bearing_608;
+//rotary bearings
+// format is IDxODxL
+xx623=[3, 10, 4];
+MF204=[4, 10, 4];
+MF126=[6, 12, 4];
+rotaryBearing=xx623;// for readability(can be changed if other bearings are used
 
-// Select carriage lenght ******************************************************
-// 30 for single carriage extruder (two holes with centers 30mm apart)
-// 50 for wade or single with fan (three holes, 30-20)
-// 80 for full length carriage (four holes, 30-20-30)
-
-carriage_l_base = 30;
-
-
-// Fillets ********************************************************************
-// fillets are rounded corners of boxes. The right engineering term is probably radius
-// but cad software calls it fillet.
-// mostly cosmetic, except z axis.
-// 0 = no fillets
-// 1 = fillet
-// 2 = chamfer (cut the edges at 45deg. angle)
-// Please do put only parts with fillets on sale, other options are not really tested
-
-use_fillets = 1;
-
-// set to 0 for single plate (affects z axis and screws that attach RP parts to frame)
-i_am_box = 0;
-
-// if you do your own plate and can move bottom Z screws 5mm up set this to 0 to
-// get stronger motor mount. Only for i_am_box = 0
-i_want_to_use_single_plate_dxf_and_make_my_z_weaker = 1;
+//====================//
+// Basic Config Items //
+//====================//
+smoothRod=8;				// diameter of smooth rods in mm
+linearBearing=lm8uu;	// change this to the linear bearing you are using from the definitions section
+zRod=M5;				// change this to the z threaded rod you are using from the definitions section
+zRodnut=M5nut;		// change this to the z nut you are using from the definitions section
+zRodnutThickness=M5nutThickness;	// change this to the z nut thickness you are using from the definitions section
 
 
-// Radius of long threaded rod on Y frame
+//=======================//
+// Advanced Config Items //
+//=======================//
+$fn=90;		// default resolution for parts, decrease if part compiling or stl/gcode is unmanageable
+thickness=5;		// thickness of walls etc. in parts
+pullyDiameter=12.2;	// GT2-20 toothed section diameter
 
-// Affects y-axis-corner (both box and single plate)
-// and y-axis-bracket (box only)
-
-//Use 5.4 for M10 or 4.4 for M8
-y_threaded_rod_long_r = 4.4;
-
-
-// Thickness of the boards that make the box frame.
-
-// in y-axis-corner it governs the height of the corners by adjusting the
-// distance between ground and M10 threaded rod. (both box and single plate)
-
-// For box model, the parts that hold Z smooth rod have one hole from front
-// and one from side, and this setting makes sure that the screw from side
-// is in the center of the plank.
-
-// Use 12 for single plate
-// or 20 if you want to use the Y lm8uu holders
-// (extras/bearing-holder-single-plate-y)
-board_thickness = 12;
-
-// Segments of small holes. some poeple claim that a low value makes them easier to print.
-small_hole_segments=7;
-
-// functions
-include <inc/functions.scad>;
-include <inc/settings.scad>;
-
-// These constants define the geometry of the doc/complete-printer.scad
-bed_x_size=190;
-bed_y_size=240;
-x_smooth_rod_length=380+board_thickness*2;
-y_smooth_rod_length=400;
-z_smooth_rod_length=320;
+// center of Z drive rod, relative to z travel rod
+shaft_offset=[40, 15];
+x_rod_thickness=20;
+length_to_hole=43;
+bearing_to_vslot=9.63;
+belt_z_space = 16;
+rail_separation = belt_z_space + x_rod_thickness + 2; // minimum space between the top and bottom 
+tolerance=0.2;
