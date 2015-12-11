@@ -2,19 +2,21 @@
  * Built around 2040 extrusion for Z axis and Tslot for XY frame.
  * Written by Joseph Lenox
 */
+include<configuration.scad>
 
 // z tower
+module printer_half() {
 ext2040(l=bed_z);
 translate([(20+distance_from_2040),0,bed_z-extrusion_width/2])
       rotate([0,90,0])ext2020(l=bed_x + 50, teeth=[1,1,1,1]);
-translate(){
-  translate([30 + distance_from_2040, 250,5+20])
+translate([30 + distance_from_2040, 250,5+20])
       rotate([90,0,0])ext2020(l=bed_z, teeth=[1,1,1,1]);
   translate([0,distance_from_2040,x_end_height+10])x_end();
   z_lower();
-}
 translate([0,0,bed_z-extrusion_width]) z_upper(show_hardware);
-
+}
+printer_half();
+translate([400,0,0])mirror([1,0,0]) printer_half();
 module z_upper(show_hardware = false)
 {
   translate([outer_pulley_channel,0,0])
@@ -235,7 +237,6 @@ module x_end() {
 }
 
 // libraries
-include<configuration.scad>
 use<inc/extrusions.scad>
 use<inc/vslot.scad>
 use<inc/functions.scad>
