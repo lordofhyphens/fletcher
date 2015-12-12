@@ -19,7 +19,7 @@ translate([0,0,bed_z-extrusion_width]) z_upper(show_hardware);
 }
 
 translate([x_end_width/2,21.5,28+separation/2+extrusion_width/2])
-  translate([200,distance_from_2040+10+5,x_end_height+10])carriage();
+  translate([200,distance_from_2040+10+5,x_end_height/2+10])carriage();
 printer_half();
 translate([400,0,0])mirror([1,0,0]) printer_half();
 module z_upper(show_hardware = false)
