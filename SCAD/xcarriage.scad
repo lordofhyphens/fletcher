@@ -8,57 +8,97 @@ tuner_overhang = 7;
 tuner_shaft = 6.1;
 tuner_bore = 10;
 
-peg_diameter=2.4;
+peg_diameter=2.4 + 0.5;
 peg_offset_from_top=2;
 peg_offset_from_side=1.35;
-peg_separation=7.5;
+peg_separation=6.5+0.5;
+peg_y_separation=-0.5 + 0.25*peg_diameter;
 tuner_depth=13.5;
 total_footprint=19.25;
 max_thickness = tuner_depth - tuner_overhang;
 
 carriage_y = max_thickness;
-module tuner()
+module tuner(shadow=false)
 {
   difference() {
     hull() {
-      cylinder(d=15,h=tuner_overhang);
-      translate([0, 1+peg_offset_from_top+peg_diameter/2+tuner_bore/2,tuner_overhang/2])cube([15,peg_diameter,tuner_overhang], center=true);
+      cylinder(d=peg_separation+(2*peg_diameter)+3,h=tuner_overhang);
+      translate([0, 1+peg_offset_from_top+peg_diameter/2+tuner_bore/2,tuner_overhang/2])cube([peg_separation+(2*peg_diameter)+3,2+peg_y_separation+peg_diameter,tuner_overhang], center=true);
     }
-    cylinder(d=tuner_bore, h=tuner_overhang);
-    cylinder(d=peg_diameter,h=tuner_overhang);
+    cylinder(d=tuner_bore+tolerance, h=tuner_overhang);
+    cylinder(d=peg_diameter+tolerance,h=tuner_overhang);
     for (i = [1, -1]) 
-      translate([i*(peg_diameter/2 + peg_separation/2),3+(tuner_bore/2),0])cylinder(d=peg_diameter,h=tuner_overhang);
+      translate([i*(peg_diameter/2 + peg_separation/2),peg_y_separation+3+(tuner_bore/2),0])cylinder(d=peg_diameter,h=tuner_overhang);
   }
-  #cylinder(d=tuner_bore, h=tuner_depth);
+  if (shadow)
+  {
+    #cylinder(d=tuner_shaft+tolerance, h=tuner_depth+4);
+    #cylinder(d=tuner_bore+tolerance, h=tuner_overhang+1);
+  }
 
 }
 module carriage() 
 {
   translate([0,0,carriage_z/2])
   {
-    roundcube([carriage_x, carriage_y, carriage_z],center=true);
-    for (i = [1, -1])
-    {
-      for (j = [1, -1])
+    difference() {
+      rotate([90,0,0])
+        roundcube([carriage_x, carriage_z, carriage_y],center=true);
+      for (i = [1, -1])
+      {
+        for (j = [1, -1])
       {
         translate([i*25, 0, j*((-M5/2)+(separation/2)+(extrusion_width) + vwheel_r())])
           rotate([90,0,0])
           cylinder(d=M5, h=20, center=true);
       }
     }
+      translate([5+inner_pulley_channel,-(carriage_y+tuner_overhang),-(carriage_z/2)])
+        for (i=[[7,270]]) {
+          translate([0,0,i[0]*x_end_height/14]){
+            color("blue")
+              translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner(true);
+          }
+        }
+      translate([-inner_pulley_channel-5,-(carriage_y+tuner_overhang),-(carriage_z/2)])
+        for (i=[[7,90]]) {
+          translate([0,0,i[0]*x_end_height/14]){
+            color("blue")
+              translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner(true);
+          }
+        }
+      translate([-inner_pulley_channel-5,-(carriage_y+tuner_overhang),-(carriage_z/2)])
+        for (i=[[7,90]]) {
+          translate([0,0,i[0]*x_end_height/14]){
+            color("blue")
+              translate([0,carriage_y/2,0])rotate([-90,i[1],0])cylinder(d=M3,h=20);
+          }
+        }
+
+      translate([0,0,-7])
+      rotate([90,0,0])
+      for (j = [1,-1]) // extruder reworking holes
+        for (i = [1,-1])
+          translate([i*rework_x_sep/2, j*rework_y_sep/2,0])
+          {
+            translate([0,-21.5,0]) {
+              #translate([0,0,5+plate[2]/2])mirror([0,0,1])boltHole(size=4,length=plate[2]+15, $fs=0.1);
+            } 
+          }
+    }
   }
   translate([5+inner_pulley_channel,-(carriage_y+tuner_overhang),0])
     for (i=[[7,270]]) {
       translate([0,0,i[0]*x_end_height/14]){
         color("blue")
-        translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner();
+          translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner();
       }
     }
   translate([-inner_pulley_channel-5,-(carriage_y+tuner_overhang),0])
     for (i=[[7,90]]) {
       translate([0,0,i[0]*x_end_height/14]){
         color("blue")
-        translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner();
+          translate([0,carriage_y/2,0])rotate([-90,i[1],0])tuner();
       }
     }
 
@@ -85,7 +125,7 @@ plate_x = (wheel_od*2 + 4 > extruder_x ? wheel_od*2 + 4 : extruder_x);
 plate_y = wheel_separation + 20;
 plate = [extruder_x + 20, plate_y, 7+10];
 
-translate([-extruder_x/2 -10,-carriage_y/2,-30])
+*translate([-extruder_x/2 -10,-carriage_y/2,-30])
 rotate([90,0,0])
   difference() {
     translate([plate[0]/2 - extruder_x/2, plate[1]/2 - extruder_z/2,0])
@@ -102,7 +142,7 @@ rotate([90,0,0])
           }
 
   }
-//tuner();
+*tuner();
 carriage();
 // libraries
 use<inc/extrusions.scad>
