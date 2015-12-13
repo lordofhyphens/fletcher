@@ -208,9 +208,9 @@ module x_end() {
   if (show_hardware) {
 
     translate([x_end_width/2,21.5,28+separation+extrusion_width])
-      rotate([0,90,0])ext2020(l=300, teeth=[1,1,1,1], hole=M5);
+      rotate([0,90,0])ext2020(l=300, teeth=[1,1,1,1], hole=M5, support=[1,0], tolerance=0.4);
     translate([x_end_width/2,21.5,28])
-      rotate([0,90,0])ext2020(l=300, teeth=[1,1,1,1], hole=M5);
+      rotate([0,90,0])ext2020(l=300, teeth=[1,1,1,1], hole=M5,support=[1,0]);
       // (optionally) show external hardware bolted onto this
     // V wheels
     for (j = [0,x_end_height-20]) {
@@ -240,10 +240,10 @@ module x_end() {
         color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
     }
   }
-  translate([x_end_width/2,21.5,28+separation+extrusion_width])
-    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,1,1], hole=M5);
-  translate([x_end_width/2,21.5,28])
-    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,1,1], hole=M5);
+  translate([x_end_width/2,22.5,28+separation+extrusion_width])
+    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
+  translate([x_end_width/2,22.5,28])
+    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
 }
 
 // libraries
