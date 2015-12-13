@@ -29,13 +29,13 @@ module ext2020(l=20, teeth = [1, 1, 1, 1], depth=1.5, tolerance=0.2) {
   }
 }
 
-module inv_ext2020(l=20, teeth = [1, 1, 1, 1], depth=1.5, tolerance=0.2, thick=3, hole=0) {
+module inv_ext2020(l=20, teeth = [1, 1, 1, 1], depth=1.5, tolerance=0.2, thick=3, hole=0, support=[1,1], layer_height=0.3) {
 {
     difference() {
       translate([0,0,l/2])
         cube([20+thick,20+thick,l], center=true);
       translate([0,0,thick])ext2020(l=l-thick, teeth=teeth, tolerance=tolerance, depth=depth);
-      translate([0, l/2,(l/2)+(hole/2)]) rotate([90,0,0])cylinder(d=hole, h=25+thick*2);
+      #translate([0, l+15+layer_height,(l/2)+(hole/2)]) rotate([90,0,0])cylinder(d=hole, h=25+thick*2);
       }
     }
 }
