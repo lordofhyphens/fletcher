@@ -4,8 +4,8 @@ M8=8.4;// diameter of M8 threaded rod
 M5=5.3;// diameter of M5 threaded rod
 M3=3.4;// diameter of M3 threaded rod
 M8nut=13;// diameter of M8 nut flat to flat
-M5nut=8;// diameter of M5 nut flat to flat
-M3nut=5.6;// diameter of M3 nut flat to flat
+M5nut=9;// diameter of M5 nut flat to flat
+M3nut=6;// diameter of M3 nut flat to flat
 
 M8nutThickness=6.8;// thickness of a standard M8 nut(nylock is 8mm)
 M5nutThickness=4.7;// thickness of a standard M5 nut(nylock is 5mm)
