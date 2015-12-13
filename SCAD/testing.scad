@@ -118,7 +118,7 @@ module z_lower() {
           for (i=[3]) {
             translate([0,0,i*x_end_height/14])
             {
-              color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=false);
+              #color("blue")translate([0,8,0])rotate([-90,0,0])cylinder(d=M3+tolerance, h=20);
               color("blue")translate([0,10,0])rotate([-90,0,0])cylinder(d=M3nut+tolerance, h=M3nutThickness+tolerance,$fn=6);
             }
           }
@@ -126,7 +126,7 @@ module z_lower() {
           for (i=[5]) {
             translate([0,0,i*x_end_height/12])
             {
-              color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=false);
+              #color("blue")translate([0,8,0])rotate([-90,0,0])cylinder(d=M3+tolerance, h=20);
               color("blue")translate([0,5,0])rotate([-90,0,0])cylinder(d=M3nut+tolerance, h=5+M3nutThickness+tolerance,$fn=6);
             }
           }
@@ -134,7 +134,7 @@ module z_lower() {
         translate([inner_pulley_channel,0,0])
           for (i=[3]) {
             translate([0,0,i*x_end_height/14]){
-              color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=false);
+              #color("blue")translate([0,8,0])rotate([-90,0,0])cylinder(d=M3+tolerance, h=20);
               color("blue")translate([0,5,0])rotate([-90,0,0])cylinder(d=M3nut+tolerance, h=5+M3nutThickness+tolerance,$fn=6);
             }
           }
@@ -146,24 +146,24 @@ module z_lower() {
   //bearings
   if (show_hardware) {
     // final pulley
-#translate([center_pulley_channel,distance_from_2040,0])
+    #translate([center_pulley_channel,distance_from_2040,0])
     for (i=[5]) {
       translate([0,0,i*x_end_height/12])
         color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
     }
 
     // inner pulley
-#translate([inner_pulley_channel,distance_from_2040,0])
+    #translate([inner_pulley_channel,distance_from_2040,0])
     for (i=[3]) {
       translate([0,0,i*x_end_height/14])
         color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
     }
-  }
   // outer pulley
-#translate([outer_pulley_channel,distance_from_2040,0])
-  for (i=[3]) {
-    translate([0,0,i*x_end_height/14])
-      color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
+    #translate([outer_pulley_channel,distance_from_2040,0])
+      for (i=[3]) {
+        translate([0,0,i*x_end_height/14])
+          color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
+      }
   }
 
 }
