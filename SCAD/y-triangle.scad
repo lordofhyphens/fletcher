@@ -33,7 +33,7 @@ echo("Lower short angle: ");
 echo(angles1[2]);
 echo("upper short angle: ");
 echo(angles1[0]);
-translate([0,0,12.5]) {
+*translate([0,0,12.5]) {
   lower_bracket(angles1, tolerance=0.5);
   translate([-60,0,0])mirror([0,1,0])lower_bracket(angles1);
 }
@@ -51,7 +51,8 @@ module upper_bracket_single(angle1, fudge, support = true, tolerance=0.5)
     {
       union() 
       {
-        translate([0,0,-3.5])roundcube([30,30,58],center=true);
+        translate([0,0,-3.5+10])roundcube([30,30,38],center=true);
+        translate([0,-7.5,-6])roundcube([30,45,10],center=true);
       }
       translate([0,0,10])
         rotate([0,angles1[0],0])
@@ -59,9 +60,12 @@ module upper_bracket_single(angle1, fudge, support = true, tolerance=0.5)
           ext2020(l=40, teeth=[0,0,1,1], depth=1.8, tolerance=tolerance);
           translate([0,30,8])rotate([90,0,0])cylinder(r=M5/2 + tolerance, h=60);
         }
-      translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
-      translate([-25,-15,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
+      *translate([-25,0,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
+      *translate([-25,-15,-20])rotate([0,90,0])ext2020(l=45,teeth=[0,0,0,0], tolerance=tolerance);
+      #translate([-20,10,-20])rotate([90,0,90])ext2040(l=40);
+      #translate([-20,-10,-20])rotate([90,0,90])ext2040(l=40);
       translate([0,0,-40])rotate([0,0,90])cylinder(r=M5/2 + tolerance, h=20); 
+      #translate([0,-20,-20])rotate([0,0,0])cylinder(r=M5/2 + tolerance, h=20); 
       translate([0,12,-20])rotate([90,0,0]) boltHole(size=5, length=10);
     }
   }
@@ -155,8 +159,9 @@ module lower_bracket(angles, support=true, stacked=false, tolerance=0.4)
     *translate([-1.0,-17,-10.5])support_cyl(r=1.25, h=21);
   }
 }
-include <inc/configuration.scad>
+include <configuration.scad>
 include<inc/metric.scad>;
 include<MCAD/nuts_and_bolts.scad>;
 use<inc/functions.scad>;
+use<inc/extrusions.scad>;
 
