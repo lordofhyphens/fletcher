@@ -18,10 +18,14 @@ translate([30 + distance_from_2040, 250,5+20])
 translate([0,0,bed_z-extrusion_width]) z_upper(show_hardware);
 }
 
-translate([x_end_width/2,21.5,28+separation/2+extrusion_width/2])
+translate([90,0,0])z_upper(show_hardware=false);
+translate([-90,0,0])x_end(show_hardware=false);
+z_lower(show_hardware=false);
+*x_end(show_hardware=false);
+*translate([x_end_width/2,21.5,28+separation/2+extrusion_width/2])
   translate([200,distance_from_2040+10+5,x_end_height/2+10])carriage();
-printer_half();
-translate([400,0,0])mirror([1,0,0]) printer_half();
+*printer_half();
+*translate([400,0,0])mirror([1,0,0]) printer_half();
 module z_upper(show_hardware = false)
 {
   translate([outer_pulley_channel,0,0])
@@ -84,8 +88,6 @@ module z_upper(show_hardware = false)
   }
 }
 
-
-
 module z_lower() {
   translate([0,0,lower_z_height/2]) {
     difference() {
@@ -109,7 +111,7 @@ module z_lower() {
           rotate([0,90,0])#cylinder(d=M5+tolerance, h=20);
       }
       for (i = [0, 35, -30]) {
-        translate([35, i, -25])
+        translate([34, i, -25])
           #cylinder(d=M5+tolerance, h=20);
       }
       translate([0,0,-lower_z_height/2]) {
@@ -204,7 +206,19 @@ module x_end() {
           }
       }
     }
+
+    // because of the way the piece goes together, need to punch holes in it
+    // twice. This makes sure the hole goes into the main block.
+    translate([x_end_width/2,22.5,28])
+      translate([17.5,20,0])
+      {
+        rotate([90,0,0])#cylinder(d=M5, h=40);
+        translate([0, 0, separation+extrusion_width])
+          rotate([90,0,0])#cylinder(d=M5, h=40);
+      }
+
   }
+
   if (show_hardware) {
 
     translate([x_end_width/2,21.5,28+separation+extrusion_width])
@@ -240,10 +254,37 @@ module x_end() {
         color("blue")translate([0,23,0])rotate([-90,0,0])vbearing(bearing=true);
     }
   }
-  translate([x_end_width/2,22.5,28+separation+extrusion_width])
-    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
-  translate([x_end_width/2,22.5,28])
-    rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
+  // put in the 2020 bracket holders
+  difference() 
+  {
+    union() {
+      translate([x_end_width/2,22.5,28+separation+extrusion_width])
+      {
+        rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
+      }
+      translate([x_end_width/2,22.5,28])
+        rotate([0,90,0])inv_ext2020(l=30, teeth=[1,1,0,1], hole=M5, thick=5);
+    }
+
+    // this removes the top wall of the brackets, turns out they don't appear to be necessary.
+
+    translate([x_end_width/2,22.5,28])
+      translate([-20,15,-18])
+      rotate([90,0,0])
+      #cube([60,70,5]);
+
+    // because of the way the piece goes together, need to punch holes in it
+    // twice. this part can probably be fixed in the inv_2020 piece instead.
+
+    translate([x_end_width/2,22.5,28])
+      translate([17.5,20,0])
+      {
+        rotate([90,0,0])#cylinder(d=M5, h=40);
+        translate([0, 0, separation+extrusion_width])
+          rotate([90,0,0])#cylinder(d=M5, h=40);
+      }
+  }
+
 }
 
 // libraries
